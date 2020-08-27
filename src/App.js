@@ -8,8 +8,9 @@ export default function App() {
         email: ""
     });
 
-    const [submitted, setSubmitted] = useState(
-    )
+    const [submitted, setSubmitted] = useState(false)
+
+    const [valid, setValid] = useState(false)
 
     const handleFirstNameChange = (event) => {
         setValues({...values, firstName: event.target.value})
@@ -20,11 +21,20 @@ export default function App() {
     const handleEmailChange = (event) => {
         setValues({...values, email: event.target.value})
     }
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        if (values.firstName && values.lastName && values.email) {
+            setValid(true);
+        }
+        setSubmitted(true);
+    }
+
+
 
   return (
       <div className="form-container">
-        <form className="register-form">
-           <div className="success-message">Success! Thank you for registering</div>
+        <form className="register-form" onSubmit={handleSubmit}>
+            {submitted && valid ? <div className="success-message">Success! Thank you for registering</div> : null}
           <input
               id="first-name"
               value={values.firstName}
@@ -34,7 +44,7 @@ export default function App() {
               name="firstName"
               onChange={handleFirstNameChange}
           />
-           <span id="first-name-error">Please enter a first name</span>
+            {submitted && !values.firstName ? <span id="first-name-error">Please enter your first name</span> : null}
           <input
               id="last-name"
               value={values.lastName}
@@ -45,7 +55,7 @@ export default function App() {
               onChange={handleLastNameChange}
           />
 
-           <span id="last-name-error">Please enter a last name</span>
+            {submitted && !values.lastName ? <span id="last-name-error">Please enter your last name</span> : null}
           <input
               id="email"
               value={values.email}
@@ -56,7 +66,7 @@ export default function App() {
               onChange={handleEmailChange}
           />
 
-           <span id="email-error">Please enter an email address</span>
+            {submitted && !values.email ? <span id="email-error">Please enter your email address</span> : null}
           <button className="form-field" type="submit">
             Register
           </button>
